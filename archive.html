@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Archiv – AZF Wochenbericht</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="modern-hero">
+    <h1><span class="azf-red barlow-bold">A</span><span class="barlow-bold">ZF</span><span class="barlow-regular white">-GRUPPE</span></h1>
+    <h2>Archiv</h2>
+  </header>
+
+  <main class="archive-layout">
+    <div class="status" id="archivStatus"></div>
+    <button onclick="deleteArchive()">🗑️ Komplett löschen</button>
+
+    <div class="table-wrapper" style="overflow-x: visible; padding: 0 2rem;">
+      <table id="archiveTable" style="width: 100%; font-size: 1rem;" style="width: 100%; min-width: auto;">
+        <thead>
+          <tr>
+            <th>Verkäufer</th><th>Datum</th><th>Kunde</th><th>Modell</th>
+            <th>Fzg-Art</th><th>Inzahlung</th><th>Bemerkung</th><th>Ergebnis</th><th>Aktion</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    function restoreEntry(index) {
+      let archived = JSON.parse(localStorage.getItem("archivedEntries") || "[]");
+      let entries = JSON.parse(localStorage.getItem("entries") || "[]");
+      if (archived[index]) {
+        entries.push(archived[index]);
+        archived.splice(index, 1);
+        localStorage.setItem("entries", JSON.stringify(entries));
+        localStorage.setItem("archivedEntries", JSON.stringify(archived));
+        renderArchiveTable();
+      }
+    }
+
+    function deleteEntry(index) {
+      let archived = JSON.parse(localStorage.getItem("archivedEntries") || "[]");
+      if (archived[index]) {
+        archived.splice(index, 1);
+        localStorage.setItem("archivedEntries", JSON.stringify(archived));
+        renderArchiveTable();
+      }
+    }
+
+    function deleteArchive() {
+      localStorage.removeItem("archivedEntries");
+      renderArchiveTable();
+    }
+
+    function renderArchiveTable() {
+      const tbody = document.getElementById("archiveTable").querySelector("tbody");
+      tbody.innerHTML = "";
+      let archived = JSON.parse(localStorage.getItem("archivedEntries") || []);
+
+      archived.forEach((entry, index) => {
+        let row = document.createElement("tr");
+        Object.values(entry).forEach(val => {
+          let cell = document.createElement("td");
+          cell.textContent = val;
+          row.appendChild(cell);
+        });
+
+        let actions = document.createElement("td");
+        actions.innerHTML = `
+          <button data-index="${index}" class="restore-btn" title="Wiederherstellen">🔄</button>
+          <button data-index="${index}" class="delete-btn" title="Löschen">🗑️</button>
+        `;
+        row.appendChild(actions);
+        tbody.appendChild(row);
+      });
+
+      // Button-Events neu binden
+      document.querySelectorAll(".restore-btn").forEach(btn => {
+        btn.onclick = () => restoreEntry(parseInt(btn.dataset.index));
+      });
+      document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.onclick = () => deleteEntry(parseInt(btn.dataset.index));
+      });
+    }
+
+    window.onload = renderArchiveTable;
+  </script>
+</body>
+</html>

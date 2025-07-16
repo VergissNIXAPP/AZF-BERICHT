@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login – AZF Wochenbericht</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="modern-hero">
+    <h1><span class="azf-red barlow-bold">A</span><span class="barlow-bold">ZF</span><span class="barlow-regular white">-GRUPPE</span></h1>
+    <h2>Wochenbericht</h2>
+  </header>
+
+  <main>
+    <form id="loginForm">
+      <label>Benutzername</label>
+      <input type="text" id="username" required />
+      <label>Passwort</label>
+      <input type="password" id="password" required />
+      <label><input type="checkbox" id="stayLoggedIn"> Eingeloggt bleiben</label>
+      <button type="submit">Login</button>
+    </form>
+    <div class="status" id="loginStatus"></div>
+  </main>
+
+  <script>
+    const users = {
+      "jan": ["jan123", "Jan Beeck"],
+      "rasmus": ["rasmus123", "Rasmus Zander"],
+      "andre": ["andre123", "Andre Schorn"]
+    };
+
+    document.getElementById("loginForm").onsubmit = function(e) {
+      e.preventDefault();
+      const user = document.getElementById("username").value.toLowerCase();
+      const pass = document.getElementById("password").value;
+      const stay = document.getElementById("stayLoggedIn").checked;
+      const statusEl = document.getElementById("loginStatus");
+
+      if (users[user] && users[user][0] === pass) {
+        const fullName = users[user][1];
+        if (stay) {
+          localStorage.setItem("activeUser", fullName);
+        } else {
+          sessionStorage.setItem("activeUser", fullName);
+        }
+        window.location.href = "home.html";
+      } else {
+        statusEl.textContent = "❌ Falscher Benutzername oder Passwort";
+        statusEl.style.color = "red";
+      }
+    };
+  </script>
+</body>
+</html>

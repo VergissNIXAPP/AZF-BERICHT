@@ -1,0 +1,390 @@
+:root {
+  --bg: #0e0e11;
+  --card: #1b1b1f;
+  --text: #ffffff;
+  --accent: #b80032;
+  --accent-light: #b80032;
+  --border: #333;
+  --font-main: 'Barlow Condensed', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+header {
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+  background: linear-gradient(90deg, #11131a, #181c25);
+  border-bottom: 1px solid var(--border);
+}
+
+header h1 {
+  font-size: 3.2rem;
+  margin: 0;
+  color: var(--accent-light);
+  letter-spacing: 1px;
+}
+
+header h2 {
+  font-size: 1.8rem;
+  margin-top: 0.3rem;
+  color: #aaa;
+}
+
+main {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem 1rem;
+}
+
+form {
+  background-color: var(--card);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-light);
+}
+
+input, select, textarea {
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.6rem;
+  background-color: #23242a;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+button {
+  margin-top: 1.5rem;
+  padding: 0.7rem;
+  width: 100%;
+  font-size: 1rem;
+  background-color: var(--accent);
+  color: var(--text);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: var(--accent-light);
+}
+
+.status {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-weight: bold;
+}
+
+.table-wrapper {
+  width: 100%;
+  padding: 0 1rem 3rem;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  min-width: 1000px;
+}
+
+th, td {
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  background: #1b1c1f;
+}
+
+th {
+  background-color: #263238;
+  color: var(--text);
+  font-size: 1.1rem;
+}
+
+td input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text);
+}
+
+.logout {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 1rem;
+  color: var(--accent-light);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.logout-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--accent-light);
+}
+
+.top-icons-removed {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.top-icons-removed button,
+.top-icons-removed a {
+  font-size: 1.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--accent-light);
+  text-decoration: none;
+}
+
+
+
+
+
+.top-left button,
+.top-right a {
+  font-size: 1.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--accent-light);
+  text-decoration: none;
+}
+
+.modern-header {
+  background: linear-gradient(135deg, #1c1c22, #2e2e38);
+  padding: 2rem 1rem 3rem 1rem;
+  text-align: center;
+  border-bottom: 2px solid var(--accent);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.modern-header h1 {
+  font-size: 3.4rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.modern-header h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #ccc;
+}
+
+
+.top-left, 
+
+
+
+
+.top-left button,
+.top-right a {
+  font-size: 1.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--accent-light);
+  text-decoration: none;
+}
+
+.modern-hero {
+  background: linear-gradient(135deg, #1d1d25 0%, #2e2e3a 100%);
+  padding: 4rem 1rem 4rem 1rem;
+  text-align: center;
+  border-bottom: 3px solid var(--accent);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+  background-image: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 80%);
+}
+
+.modern-hero h1 {
+  font-size: 3.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  margin: 0;
+}
+
+.modern-hero h2 {
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: #ccc;
+  margin-top: 0.8rem;
+}
+
+.azf-red {
+  color: var(--accent);
+}
+
+.modern-hero h1 {
+  font-size: 3.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.modern-hero h2 {
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: #ccc;
+  margin-top: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.balow-bold {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+}
+
+.barlow-regular {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 400;
+}
+
+.barlow-bold {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+}
+
+.barlow-regular {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 400;
+}
+
+.white {
+  color: #ffffff;
+}
+
+.top-left, 
+
+
+
+
+
+.top-left button,
+.top-right a {
+  font-size: 1.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--accent-light);
+  text-decoration: none;
+}
+.top-left,
+.top-right {
+  position: absolute;
+  top: 20px;
+}
+
+.top-left {
+  left: 20px;
+}
+
+.top-right {
+  right: 20px;
+}
+
+.top-left button,
+.top-right a {
+  font-size: 1.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--accent-light);
+  text-decoration: none;
+}
+
+
+.logout-btn button,
+.archive-btn a {
+  font-size: 1.6rem;
+  background: none;
+  border: none;
+  color: var(--accent-light);
+  cursor: pointer;
+  text-decoration: none;
+}
+.header-buttons {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 100;
+}
+
+.logout-button,
+.archive-button {
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: var(--accent-light);
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1;
+}
+
+/* Erweiterung für Archiv-Seite */
+.archive-container {
+  max-width: 100%;
+  width: 100%;
+  padding: 2rem;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+#archiveTable {
+  width: 100%;
+  min-width: 1200px;
+}
+
+
+/* Archivansicht optisch zentrieren und vergrößern */
+.archive-layout {
+  max-width: 1400px;
+  margin: auto;
+  padding: 2rem;
+}
+
+
+/* "Komplett löschen"-Button schmaler anzeigen */
+.archive-layout button {
+  display: inline-block;
+  width: auto;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}

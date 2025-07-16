@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>AZF Wochenbericht</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="header-buttons">
+  <a class="archive-button" href="archive.html" title="Archiv öffnen">📚</a>
+</div>
+
+<header class="modern-hero">
+  <h1><span class="azf-red barlow-bold">A</span><span class="barlow-bold">ZF</span><span class="barlow-regular white">-GRUPPE</span></h1>
+  <h2>Wochenbericht</h2>
+</header>
+
+<main>
+  <div class="status" id="userStatus"></div>
+
+  <form id="entryForm">
+    <input type="hidden" id="verkaeufer">
+    <label>Datum</label>
+    <input type="date" id="datum">
+    <label>Kunde</label>
+    <input type="text" id="kunde">
+    <label>Modell</label>
+    <input type="text" id="modell">
+    <label>Fahrzeugart</label>
+    <input type="text" id="fahrzeugart">
+    <label>Inzahlungnahme</label>
+    <input type="text" id="inzahlungnahme">
+    <label>Bemerkung</label>
+    <textarea id="bemerkung"></textarea>
+    <label>Ergebnis</label>
+    <input type="text" id="ergebnis">
+    <button type="button" onclick="saveEntry()">Speichern</button>
+    <button type="button" onclick="exportCSV()">Export als CSV</button>
+  </form>
+  <div class="status" id="status"></div>
+</main>
+
+<div class="table-wrapper">
+  <table id="entryTable">
+    <thead>
+      <tr>
+        <th>Verkäufer</th><th>Datum</th><th>Kunde</th><th>Modell</th>
+        <th>Fzg-Art</th><th>Inzahlung</th><th>Bemerkung</th><th>Ergebnis</th><th>Aktion</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+function getActiveUser() {
+  return localStorage.getItem("activeUser") || sessionStorage.getItem("activeUser");
+}
+
+function getEntries() {
+  return JSON.parse(localStorage.getItem("entries") || "[]");
+}
+
+function saveEntry() {
+  const entry = {
+    verkaeufer: form.verkaeufer.value,
+    datum: form.datum.value,
+    kunde: form.kunde.value,
+    modell: form.modell.value,
+    fahrzeugart: form.fahrzeugart.value,
+    inzahlungnahme: form.inzahlungnahme.value,
+    bemerkung: form.bemerkung.value,
+    ergebnis: form.ergebnis.value
+  };
+  const entries = getEntries();
+  entries.push(entry);
+  localStorage.setItem("entries", JSON.stringify(entries));
+  updateTable();
+  status.textContent = "✅ Gespeichert";
+  status.style.color = "lightgreen";
+  form.reset();
+  form.verkaeufer.value = getActiveUser();
+  form.datum.valueAsDate = new Date();
+}
+
+function updateTable() {
+  const entries = getEntries();
+  tableBody.innerHTML = "";
+  entries.forEach((entry, index) => {
+    const row = document.createElement("tr");
+    Object.entries(entry).forEach(([key, value]) => {
+      const cell = document.createElement("td");
+      const input = document.createElement("input");
+      input.value = value;
+      input.onchange = () => {
+        entries[index][key] = input.value;
+        localStorage.setItem("entries", JSON.stringify(entries));
+      };
+      cell.appendChild(input);
+      row.appendChild(cell);
+    });
+    const actions = document.createElement("td");
+    const del = document.createElement("button");
+    del.textContent = "🗑️";
+    del.onclick = () => {
+      const archived = JSON.parse(localStorage.getItem("archivedEntries") || "[]");
+      archived.push(entries[index]);
+      localStorage.setItem("archivedEntries", JSON.stringify(archived));
+      entries.splice(index, 1);
+      localStorage.setItem("entries", JSON.stringify(entries));
+      updateTable();
+    };
+    actions.appendChild(del);
+    row.appendChild(actions);
+    tableBody.appendChild(row);
+  });
+}
+
+function exportCSV() {
+  const entries = getEntries();
+  if (!entries.length) return;
+
+  const today = new Date();
+  const onejan = new Date(today.getFullYear(), 0, 1);
+  const week = Math.ceil((((today - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+
+  const headers = Object.keys(entries[0]);
+  const capitalizedHeaders = headers.map(h => h.charAt(0).toUpperCase() + h.slice(1));
+  const titleRow = "Wochenbericht - Woche " + week;
+  const csvRows = [titleRow, capitalizedHeaders.join(";")];
+
+  entries.forEach(entry => {
+    csvRows.push(headers.map(h => `"${(entry[h] || "").replace(/"/g, '""')}"`).join(";"));
+  });
+
+  const blob = new Blob([csvRows.join("\n")], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const formElement = document.getElementById("entryForm");
+  const safeName = (formElement.verkaeufer.value || "Unbekannt")
+    .normalize("NFD")
+    .replace(/[̀-ͯ\s]/g, "_");
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `Wochenbericht_Woche_${week}_${safeName}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  window.form = document.getElementById("entryForm");
+  window.status = document.getElementById("status");
+  window.tableBody = document.querySelector("#entryTable tbody");
+
+  const user = getActiveUser();
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  form.verkaeufer.value = user;
+  form.datum.valueAsDate = new Date();
+  document.getElementById("userStatus").textContent = `👤 Eingeloggt als: ${user}`;
+  updateTable();
+
+  const fields = Array.from(form.querySelectorAll("input, textarea")).filter(f => f.type !== "hidden");
+  fields.forEach((field, i) => {
+    field.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const next = fields[i + 1];
+        if (next) next.focus();
+        else saveEntry();
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>
