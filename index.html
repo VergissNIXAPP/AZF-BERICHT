@@ -19,7 +19,7 @@
       <input type="text" id="username" required />
       <label>Passwort</label>
       <input type="password" id="password" required />
-      <label><input type="checkbox" id="stayLoggedIn"> Eingeloggt bleiben</label>
+      <label><input type="checkbox" id="stayLoggedIn" checked> Eingeloggt bleiben</label>
       <button type="submit">Login</button>
     </form>
     <div class="status" id="loginStatus"></div>
@@ -36,22 +36,27 @@
       e.preventDefault();
       const user = document.getElementById("username").value.toLowerCase();
       const pass = document.getElementById("password").value;
-      const stay = document.getElementById("stayLoggedIn").checked;
       const statusEl = document.getElementById("loginStatus");
 
       if (users[user] && users[user][0] === pass) {
         const fullName = users[user][1];
-        if (stay) {
-          localStorage.setItem("activeUser", fullName);
-        } else {
-          sessionStorage.setItem("activeUser", fullName);
-        }
+        // Immer in localStorage speichern
+        localStorage.setItem("activeUser", fullName);
         window.location.href = "home.html";
       } else {
         statusEl.textContent = "❌ Falscher Benutzername oder Passwort";
         statusEl.style.color = "red";
       }
     };
+
+    // Service Worker registrieren
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log("✅ Service Worker registriert"))
+          .catch(err => console.error("❌ Service Worker Fehler:", err));
+      });
+    }
   </script>
 </body>
 </html>
